@@ -29,7 +29,7 @@ struct ContentView: View {
                             Text(word)
                         }
                         .accessibilityElement(children: .ignore)
-                        .accessibility(label: Text("word, \(word.count) letters"))
+                        .accessibility(label: Text("\(word), \(word.count) letters"))
                     
                     }
                     Text("Score is: \(score)")
