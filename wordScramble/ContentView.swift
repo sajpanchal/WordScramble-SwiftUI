@@ -22,10 +22,15 @@ struct ContentView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                         .autocapitalization(.none)
-                    List(usedWords, id:\.self) {
+                    List(usedWords, id:\.self) { word in
                         //if we show list items dynamically, all contents in list will appear horizontally in one row.
-                        Image(systemName: "\($0.count).circle")
-                        Text($0)
+                        HStack {
+                            Image(systemName: "\(word.count).circle")
+                            Text(word)
+                        }
+                        .accessibilityElement(children: .ignore)
+                        .accessibility(label: Text("word, \(word.count) letters"))
+                    
                     }
                     Text("Score is: \(score)")
                 }.navigationBarTitle(rootWord)
