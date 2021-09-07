@@ -37,8 +37,8 @@ struct ContentView: View {
                             //if we show list items dynamically, all contents in list will appear horizontally in one row.
                            GeometryReader { txt in
                                 HStack {
-                                    Image(systemName: "\(word.count).circle")
-                                    Text(word)
+                                    Image(systemName: "\(word.count).circle").foregroundColor((Color(red: (usedWords.firstIndex(of: word)! % 2 == 0) ?  Double((txt.frame(in:.global).minY) / txt.frame(in:.global).maxY) : 0.0, green: (usedWords.firstIndex(of: word)! % 2 != 0) ?  Double((txt.frame(in:.global).minY) / txt.frame(in:.global).maxY) : 0.0, blue: (usedWords.firstIndex(of: word)! % 3 == 0) ?  Double((txt.frame(in:.global).minY) / txt.frame(in:.global).maxY) : 0.0)))
+                                    Text(word + "\(Double((txt.frame(in:.global).minY) / txt.frame(in:.global).maxY))")
                                         .offset(x: (usedWords.firstIndex(of: word)! > 8) ? txt.frame(in: .global).minY * 0.3 : 0.0)
                                 }
                                 .accessibilityElement(children: .ignore)
