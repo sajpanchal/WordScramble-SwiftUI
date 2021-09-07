@@ -15,30 +15,45 @@ struct ContentView: View {
     @State var errorMessage = ""
     @State var showingError = false
     @State var score = 0
+    @State var count: Int = 0
+    var counts: Int {
+        get {
+           return count
+        }
+        set {
+           return count = newValue
+        }
+    }
         var body: some View {
             NavigationView {
-                VStack {
-                    TextField("Enter your word", text: $newWord, onCommit: addNewWord)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                        .autocapitalization(.none)
-                    List(usedWords, id:\.self) { word in
-                        //if we show list items dynamically, all contents in list will appear horizontally in one row.
-                        HStack {
-                            Image(systemName: "\(word.count).circle")
-                            Text(word)
+                GeometryReader { geo in
+                    VStack {
+                        TextField("Enter your word", text: $newWord, onCommit: addNewWord)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                            .autocapitalization(.none)
+                        List(usedWords, id:\.self) { word in
+                            
+                            //if we show list items dynamically, all contents in list will appear horizontally in one row.
+                           GeometryReader { txt in
+                                HStack {
+                                    Image(systemName: "\(word.count).circle")
+                                    Text(word)
+                                        .offset(x: (usedWords.firstIndex(of: word)! > 8) ? txt.frame(in: .global).minY * 0.3 : 0.0)
+                                }
+                                .accessibilityElement(children: .ignore)
+                                .accessibility(label: Text("\(word), \(word.count) letters"))
+                            }
                         }
-                        .accessibilityElement(children: .ignore)
-                        .accessibility(label: Text("\(word), \(word.count) letters"))
-                    
-                    }
-                    Text("Score is: \(score)")
-                }.navigationBarTitle(rootWord)
-                .navigationBarItems(trailing: Button("Play", action: startGame))
-                .onAppear(perform: startGame) // it will be called when view appears
-                .alert(isPresented: $showingError, content: {
-                    Alert(title: Text(errorTitle), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-                })
+                        Text("Score is: \(score)")
+                    }.navigationBarTitle(rootWord)
+                    .navigationBarItems(trailing: Button("Play", action: startGame))
+                    .onAppear(perform: startGame) // it will be called when view appears
+                    .alert(isPresented: $showingError, content: {
+                        Alert(title: Text(errorTitle), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+                    })
+                }
+               
         }
     }
     func addNewWord() {
